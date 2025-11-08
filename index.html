@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TMA Clicker</title>
+    
+    <!-- 1. Подключение SDK Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="user-info">Загрузка...</div>
+
+    <div id="game-area">
+        <div id="chest">&#127873;</div> <!-- Эмодзи подарка (gift) -->
+        
+        <div class="progress-bar">
+            <div id="progress"></div>
+        </div>
+        <div id="progress-text">0%</div> <!-- Изменено на 0% -->
+        
+        <div id="message"></div>
+    </div>
+
+    <button id="ad-button">Смотреть рекламу (для 2-го сундука)</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

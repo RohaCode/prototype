@@ -1,0 +1,117 @@
+/* Используем переменные темы Telegram для "нативной" адаптации */
+:root {
+    --tg-bg-color: var(--tg-theme-bg-color, #18222d);
+    --tg-text-color: var(--tg-theme-text-color, #ffffff);
+    --tg-button-color: var(--tg-theme-button-color, #2ea6ff);
+    --tg-button-text-color: var(--tg-theme-button-text-color, #ffffff);
+    --tg-hint-color: var(--tg-theme-hint-color, #b1c2d0);
+    --tg-progress-bg: #3a4a5a;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--tg-bg-color);
+    color: var(--tg-text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    box-sizing: border-box;
+    /* Убираем "отскок" при быстрой прокрутке на iOS */
+    overscroll-behavior: none;
+}
+
+#user-info {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--tg-hint-color);
+    position: absolute;
+    top: 20px;
+}
+
+#game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Запрещаем выделение текста при быстрых кликах */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#chest {
+    font-size: 10rem;
+    cursor: pointer;
+    margin: 30px 0;
+    /* Анимация "дыхания" для привлечения внимания */
+    animation: pulse 2s infinite ease-in-out;
+    transition: transform 0.1s ease;
+}
+
+/* Анимация клика */
+#chest:active {
+    transform: scale(0.95);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.progress-bar {
+    width: 90vw;
+    max-width: 300px;
+    height: 24px; /* Сделаем чуть выше */
+    background-color: var(--tg-progress-bg);
+    border-radius: 12px; /* Увеличим скругление */
+    overflow: hidden;
+    /* Убираем старую рамку и добавляем тень "внутрь" для объема */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    /* Добавляем красивый градиент, основанный на цвете кнопки */
+    background: linear-gradient(90deg, var(--tg-button-color, #2ea6ff) 0%, #80c7ff 100%);
+    /* Анимация заполнения стала чуть плавнее */
+    transition: width 0.2s ease-out;
+    /* Скруглением теперь управляет родитель (.progress-bar) */
+}
+
+#progress-text {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: var(--tg-hint-color);
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    min-height: 2em; /* Резервируем место, чтобы интерфейс не прыгал */
+}
+
+#ad-button {
+    display: none; /* Изначально кнопка скрыта */
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--tg-button-color);
+    color: var(--tg-button-text-color);
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+#ad-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
