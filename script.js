@@ -39,67 +39,55 @@ window.addEventListener('load', () => {
     
     // Расширяем приложение на всю высоту
     tg.expand();
-});
 
-// --- Логика геймплея (Кликер) ---
-chestEl.addEventListener('click', () => {
-    if (isChestLocked || isAdPlaying) {
-        // Не даем кликать, если сундук заблокирован или идет реклама
-        return;
-    }
+    // --- Логика геймплея (Кликер) ---
+    chestEl.addEventListener('click', () => {
+        if (isChestLocked || isAdPlaying) {
+            // Не даем кликать, если сундук заблокирован или идет реклама
+            return;
+        }
 
-    clickCount++;
+        clickCount++;
+        
+        // 3. Обновляем прогресс-бар
+        const progressPercentage = Math.min((clickCount / CLICKS_TO_OPEN) * 100, 100);
+        progressEl.style.width = `${progressPercentage}%`;
+        // Обновляем текст, округляя до целого процента
+        progressTextEl.innerText = `${Math.floor(progressPercentage)}%`;
+
+        // 4. Сундук открыт
+        if (clickCount >= CLICKS_TO_OPEN) {
+            openChest();
+        }
+    });
     
-    // 3. Обновляем прогресс-бар
-    const progressPercentage = Math.min((clickCount / CLICKS_TO_OPEN) * 100, 100);
-    progressEl.style.width = `${progressPercentage}%`;
-    // Обновляем текст, округляя до целого процента
-    progressTextEl.innerText = `${Math.floor(progressPercentage)}%`;
+    // --- Логика рекламы (Симуляция) ---
+    adButtonEl.addEventListener('click', () => {
+        if (isAdPlaying) return;
 
-    // 4. Сундук открыт
-    if (clickCount >= CLICKS_TO_OPEN) {
-        openChest();
-    }
-});
+        isAdPlaying = true;
+        adButtonEl.disabled = true;
+        messageEl.innerText = 'Идет просмотр рекламы...';
 
-function openChest() {
-    // 4.1. Показываем награду
-    messageEl.innerText = 'Сундук открыт! Отличная работа!';
-    chestEl.innerHTML = '&#127881;'; // Эмодзи награды (хлопушка/tada)
-    
-    // 4.2. Блокируем сундук
-    isChestLocked = true;
-    
-    // 5. Показываем кнопку рекламы
-    adButtonEl.style.display = 'block';
-}
-
-// --- Логика рекламы (Симуляция) ---
-adButtonEl.addEventListener('click', () => {
-    if (isAdPlaying) return;
-
-    isAdPlaying = true;
-    adButtonEl.disabled = true;
-    messageEl.innerText = 'Идет просмотр рекламы...';
-
-    // *** СИМУЛЯЦИЯ РЕКЛАМЫ ***
-    // На этом месте должен быть вызов реального SDK, например:
-    // tg.Ads.showRewardedVideo({ ad_unit_id: 'YOUR_AD_UNIT_ID' }, (result) => {
-    //     if (result.success) {
-    //         // Реклама просмотрена, даем награду
-    //         onAdWatched();
-    //     } else {
-    //         // Ошибка или реклама закрыта
-    //         messageEl.innerText = 'Нужно досмотреть рекламу, чтобы продолжить!';
-    //         isAdPlaying = false;
-    //         adButtonEl.disabled = false;
-    //     }
-    // });
-    
-    // Используем setTimeout для симуляции просмотра (3 секунды)
-    setTimeout(() => {
-        onAdWatched(); // Вызываем коллбэк "успешного просмотра"
-    }, 3000);
+        // *** СИМУЛЯЦИЯ РЕКЛАМЫ ***
+        // На этом месте должен быть вызов реального SDK, например:
+        // tg.Ads.showRewardedVideo({ ad_unit_id: 'YOUR_AD_UNIT_ID' }, (result) => {
+        //     if (result.success) {
+        //         // Реклама просмотрена, даем награду
+        //         onAdWatched();
+        //     } else {
+        //         // Ошибка или реклама закрыта
+        //         messageEl.innerText = 'Нужно досмотреть рекламу, чтобы продолжить!';
+        //         isAdPlaying = false;
+        //         adButtonEl.disabled = false;
+        //     }
+        // });
+        
+        // Используем setTimeout для симуляции просмотра (3 секунды)
+        setTimeout(() => {
+            onAdWatched(); // Вызываем коллбэк "успешного просмотра"
+        }, 3000);
+    });
 });
 
 // 6. Функция "награды" после просмотра
