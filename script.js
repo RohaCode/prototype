@@ -1,7 +1,7 @@
 // --- Константы игры ---
-const CLICKS_TO_OPEN = 10; // Ставим 10 для удобства тестирования
+const CLICKS_TO_OPEN = 10; // Кол-во кликов для быстрого теста
 
-// --- Элементы UI ---
+// Элементы дизайна
 const tg = window.Telegram.WebApp;
 const userInfoEl = document.getElementById('user-info');
 const chestEl = document.getElementById('chest');
@@ -10,25 +10,25 @@ const progressTextEl = document.getElementById('progress-text');
 const messageEl = document.getElementById('message');
 const adButtonEl = document.getElementById('ad-button');
 
-// --- Состояние игры ---
+// Состояние игры
 let clickCount = 0;
-let isChestLocked = false; // Заблокирован ли сундук (в ожидании рекламы)
-let isAdPlaying = false; // Идет ли "просмотр" рекламы
+let isChestLocked = false; // Проверка блокировку сундука
+let isAdPlaying = false; // Проверка просмотра рекламы
 
 // --- Инициализация приложения ---
-let AdController; // Объявляем AdController здесь, чтобы он был доступен глобально
+let AdController; // Глобальный AdController
 
 window.addEventListener('load', () => {
-    // Сообщаем Telegram, что приложение готово
+    // Приложение готово
     tg.ready();
     
-    // 2. Авторизация и получение данных пользователя
+    // Авторизация и получение данных пользователя
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         const userName = user.first_name || user.username || 'Игрок';
         userInfoEl.innerText = `Игрок: ${userName}`;
 
-        // Инициализация Adsgram только после того, как Telegram Web App готов и есть данные пользователя
+        // Инициализация Adsgram , после получения данных пользователя
         if (window.Adsgram) {
             console.log("Telegram WebApp is ready. Initializing Adsgram...");
             AdController = window.Adsgram.init({
@@ -46,44 +46,44 @@ window.addEventListener('load', () => {
         console.warn("Telegram WebApp initDataUnsafe or user data not available. Adsgram will not be initialized.");
     }
     
-    // Расширяем приложение на всю высоту
+    // Открываем приложение на весь экран ( хотя это уже не надо , так как при настройке мини апп в боте , там уже это все сразу устанавливается)
     tg.expand();
 });
 
-// --- Логика геймплея (Кликер) ---
+// Логика кликера
 chestEl.addEventListener('click', () => {
     if (isChestLocked || isAdPlaying) {
-        // Не даем кликать, если сундук заблокирован или идет реклама
+        // Блокировка кликов пока не посмотрели рекламу
         return;
     }
 
     clickCount++;
     
-    // 3. Обновляем прогресс-бар
+    // Обновляем прогресс-бар
     const progressPercentage = Math.min((clickCount / CLICKS_TO_OPEN) * 100, 100);
     progressEl.style.width = `${progressPercentage}%`;
-    // Обновляем текст, округляя до целого процента
+    // Обновления прогресса
     progressTextEl.innerText = `${Math.floor(progressPercentage)}%`;
 
-    // 4. Сундук открыт
+    // Открытие сундука
     if (clickCount >= CLICKS_TO_OPEN) {
         openChest();
     }
 });
 
 function openChest() {
-    // 4.1. Показываем награду
+    // Показываем награду
     messageEl.innerText = 'Сундук открыт! Отличная работа!';
-    chestEl.innerHTML = '&#127881;'; // Эмодзи награды (хлопушка/tada)
+    chestEl.innerHTML = '&#127881;'; // Заглушка
     
-    // 4.2. Блокируем сундук
+    // Блокируем сундук
     isChestLocked = true;
     
-    // 5. Показываем кнопку рекламы
+    // Показываем кнопку рекламы
     adButtonEl.style.display = 'block';
 }
 
-// --- Логика рекламы (Симуляция заменена на Adsgram) ---
+// Логика показа рекламы
 adButtonEl.addEventListener('click', () => {
     if (isAdPlaying) return;
 
@@ -94,12 +94,12 @@ adButtonEl.addEventListener('click', () => {
     if (AdController) {
         AdController.show()
             .then(() => {
-                // Реклама показана успешно (просмотрена или закрыта)
+                // Реклама показана успешно
                 messageEl.innerText = 'Реклама успешно показана!';
                 onAdWatched();
             })
             .catch((error) => {
-                // Ошибка при показе рекламы или пользователь пропустил
+                // Ошибка при показе рекламы
                 console.error("Ошибка при показе рекламы Adsgram:", error);
                 messageEl.innerText = 'Не удалось показать рекламу или она была пропущена.';
                 isAdPlaying = false;
@@ -113,11 +113,11 @@ adButtonEl.addEventListener('click', () => {
     }
 });
 
-// 6. Функция "награды" после просмотра
+// Награда после просмотра
 function onAdWatched() {
     messageEl.innerText = 'Спасибо за просмотр! Следующий сундук готов.';
     
-    // Сбрасываем игру в начальное состояние
+    // Сброс игры в начальное состояние
     resetGame();
 }
 
@@ -135,7 +135,7 @@ function resetGame() {
     
     // Очищаем сообщение через пару секунд
     setTimeout(() => {
-        if (!isChestLocked) { // Не очищаем, если уже что-то новое
+        if (!isChestLocked) { // Не очищаем 
             messageEl.innerText = '';
         }
     }, 2000);

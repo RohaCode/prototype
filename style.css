@@ -1,4 +1,3 @@
-/* Используем переменные темы Telegram для "нативной" адаптации */
 :root {
     --tg-bg-color: var(--tg-theme-bg-color, #18222d);
     --tg-text-color: var(--tg-theme-text-color, #ffffff);
@@ -21,7 +20,6 @@ body {
     min-height: 100vh;
     text-align: center;
     box-sizing: border-box;
-    /* Убираем "отскок" при быстрой прокрутке на iOS */
     overscroll-behavior: none;
 }
 
@@ -38,7 +36,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Запрещаем выделение текста при быстрых кликах */
     user-select: none;
     -webkit-user-select: none;
 }
@@ -47,12 +44,10 @@ body {
     font-size: 10rem;
     cursor: pointer;
     margin: 30px 0;
-    /* Анимация "дыхания" для привлечения внимания */
     animation: pulse 2s infinite ease-in-out;
     transition: transform 0.1s ease;
 }
 
-/* Анимация клика */
 #chest:active {
     transform: scale(0.95);
 }
@@ -66,22 +61,18 @@ body {
 .progress-bar {
     width: 90vw;
     max-width: 300px;
-    height: 24px; /* Сделаем чуть выше */
+    height: 24px;
     background-color: var(--tg-progress-bg);
-    border-radius: 12px; /* Увеличим скругление */
+    border-radius: 12px;
     overflow: hidden;
-    /* Убираем старую рамку и добавляем тень "внутрь" для объема */
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 #progress {
     width: 0%;
     height: 100%;
-    /* Добавляем красивый градиент, основанный на цвете кнопки */
     background: linear-gradient(90deg, var(--tg-button-color, #2ea6ff) 0%, #80c7ff 100%);
-    /* Анимация заполнения стала чуть плавнее */
     transition: width 0.2s ease-out;
-    /* Скруглением теперь управляет родитель (.progress-bar) */
 }
 
 #progress-text {
@@ -94,11 +85,11 @@ body {
     margin-top: 20px;
     font-size: 1.1rem;
     font-weight: 500;
-    min-height: 2em; /* Резервируем место, чтобы интерфейс не прыгал */
+    min-height: 2em;
 }
 
 #ad-button {
-    display: none; /* Изначально кнопка скрыта */
+    display: none;
     margin-top: 20px;
     padding: 15px 30px;
     font-size: 1rem;
