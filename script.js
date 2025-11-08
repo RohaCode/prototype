@@ -27,25 +27,27 @@ window.addEventListener('load', () => {
         const user = tg.initDataUnsafe.user;
         const userName = user.first_name || user.username || 'Игрок';
         userInfoEl.innerText = `Игрок: ${userName}`;
+
+        // Инициализация Adsgram только после того, как Telegram Web App готов и есть данные пользователя
+        if (window.Adsgram) {
+            console.log("Telegram WebApp is ready. Initializing Adsgram...");
+            AdController = window.Adsgram.init({
+                blockId: "17141",
+                debug: true,
+                debugConsole: true
+            });
+            console.log("Adsgram initialized in debug mode.");
+        } else {
+            console.error("Adsgram SDK not loaded (window.Adsgram is undefined).");
+        }
+
     } else {
         userInfoEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
+        console.warn("Telegram WebApp initDataUnsafe or user data not available. Adsgram will not be initialized.");
     }
     
     // Расширяем приложение на всю высоту
     tg.expand();
-
-    // Инициализация Adsgram
-    // ВНИМАНИЕ: Замени "YOUR_ADSGRAM_BLOCK_ID" на свой реальный blockId с partner.adsgram.ai
-    if (window.Adsgram) {
-        AdController = window.Adsgram.init({
-            blockId: "17141",
-            debug: true, // Включаем режим отладки для тестирования
-            debugConsole: true // Выводим логи отладки в консоль
-        });
-        console.log("Adsgram initialized in debug mode.");
-    } else {
-        console.error("Adsgram SDK not loaded.");
-    }
 });
 
 // --- Логика геймплея (Кликер) ---
