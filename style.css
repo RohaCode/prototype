@@ -25,13 +25,14 @@ body {
     overscroll-behavior: none;
 }
 
-        #user-info {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--tg-hint-color);
-            position: absolute;
-            top: 20px;
-        }
+#user-info {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--tg-hint-color);
+    position: absolute;
+    top: 20px;
+}
+
 #game-area {
     display: flex;
     flex-direction: column;

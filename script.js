@@ -121,31 +121,3 @@ function resetGame() {
         }
     }, 2000);
 }
-
-// 6. Функция "награды" после просмотра
-function onAdWatched() {
-    messageEl.innerText = 'Спасибо за просмотр! Следующий сундук готов.';
-    
-    // Сбрасываем игру в начальное состояние
-    resetGame();
-}
-
-function resetGame() {
-    clickCount = 0;
-    isChestLocked = false;
-    isAdPlaying = false;
-    
-    adButtonEl.style.display = 'none';
-    adButtonEl.disabled = false;
-    
-    progressEl.style.width = '0%';
-    progressTextEl.innerText = `0%`; // Сбрасываем на 0%
-    chestEl.innerHTML = '&#127873;'; // Снова закрытый подарок
-    
-    // Очищаем сообщение через пару секунд
-    setTimeout(() => {
-        if (!isChestLocked) { // Не очищаем, если уже что-то новое
-            messageEl.innerText = '';
-        }
-    }, 2000);
-}
