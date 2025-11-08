@@ -3,12 +3,12 @@ const CLICKS_TO_OPEN = 10; // Ставим 10 для удобства тести
 
 // --- Элементы UI ---
 const tg = window.Telegram.WebApp;
-const userInfoEl = document.getElementById('user-info');
-const chestEl = document.getElementById('chest');
-const progressEl = document.getElementById('progress');
-const progressTextEl = document.getElementById('progress-text');
-const messageEl = document.getElementById('message');
-const adButtonEl = document.getElementById('ad-button');
+let userInfoEl;
+let chestEl;
+let progressEl;
+let progressTextEl;
+let messageEl;
+let adButtonEl;
 
 // --- Состояние игры ---
 let clickCount = 0;
@@ -17,6 +17,14 @@ let isAdPlaying = false; // Идет ли "просмотр" рекламы
 
 // --- Инициализация приложения ---
 window.addEventListener('load', () => {
+    // Получаем ссылки на элементы UI после загрузки DOM
+    userInfoEl = document.getElementById('user-info');
+    chestEl = document.getElementById('chest');
+    progressEl = document.getElementById('progress');
+    progressTextEl = document.getElementById('progress-text');
+    messageEl = document.getElementById('message');
+    adButtonEl = document.getElementById('ad-button');
+
     // Сообщаем Telegram, что приложение готово
     tg.ready();
     
