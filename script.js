@@ -4,6 +4,8 @@ const CLICKS_TO_OPEN = 10; // Ставим 10 для удобства тести
 // --- Элементы UI ---
 const tg = window.Telegram.WebApp;
 const userInfoEl = document.getElementById('user-info');
+const userAvatarEl = document.getElementById('user-avatar');
+const userNameDisplayEl = document.getElementById('user-name-display');
 const chestEl = document.getElementById('chest');
 const progressEl = document.getElementById('progress');
 const progressTextEl = document.getElementById('progress-text');
@@ -24,9 +26,17 @@ window.addEventListener('load', () => {
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         const userName = user.first_name || user.username || 'Игрок';
-        userInfoEl.innerText = `Игрок: ${userName}`;
+        userNameDisplayEl.innerText = `Игрок: ${userName}`;
+
+        if (user.photo_url) {
+            userAvatarEl.src = user.photo_url;
+            userAvatarEl.style.display = 'block'; // Show the avatar
+        } else {
+            userAvatarEl.style.display = 'none'; // Hide if no photo
+        }
     } else {
-        userInfoEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
+        userNameDisplayEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
+        userAvatarEl.style.display = 'none'; // Hide if no user data
     }
     
     // Расширяем приложение на всю высоту
