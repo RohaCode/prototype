@@ -16,6 +16,8 @@ let isChestLocked = false; // Заблокирован ли сундук (в о�
 let isAdPlaying = false; // Идет ли "просмотр" рекламы
 
 // --- Инициализация приложения ---
+let AdController; // Объявляем AdController здесь, чтобы он был доступен глобально
+
 window.addEventListener('load', () => {
     // Сообщаем Telegram, что приложение готово
     tg.ready();
@@ -31,6 +33,19 @@ window.addEventListener('load', () => {
     
     // Расширяем приложение на всю высоту
     tg.expand();
+
+    // Инициализация Adsgram
+    // ВНИМАНИЕ: Замени "YOUR_ADSGRAM_BLOCK_ID" на свой реальный blockId с partner.adsgram.ai
+    if (window.Adsgram) {
+        AdController = window.Adsgram.init({
+            blockId: "r-17141",
+            debug: true, // Включаем режим отладки для тестирования
+            debugConsole: true // Выводим логи отладки в консоль
+        });
+        console.log("Adsgram initialized in debug mode.");
+    } else {
+        console.error("Adsgram SDK not loaded.");
+    }
 });
 
 // --- Логика геймплея (Кликер) ---
@@ -66,32 +81,34 @@ function openChest() {
     adButtonEl.style.display = 'block';
 }
 
-// --- Логика рекламы (Симуляция) ---
+// --- Логика рекламы (Симуляция заменена на Adsgram) ---
 adButtonEl.addEventListener('click', () => {
     if (isAdPlaying) return;
 
     isAdPlaying = true;
     adButtonEl.disabled = true;
-    messageEl.innerText = 'Идет просмотр рекламы...';
+    messageEl.innerText = 'Загрузка рекламы...';
 
-    // *** СИМУЛЯЦИЯ РЕКЛАМЫ ***
-    // На этом месте должен быть вызов реального SDK, например:
-    // tg.Ads.showRewardedVideo({ ad_unit_id: 'YOUR_AD_UNIT_ID' }, (result) => {
-    //     if (result.success) {
-    //         // Реклама просмотрена, даем награду
-    //         onAdWatched();
-    //     } else {
-    //         // Ошибка или реклама закрыта
-    //         messageEl.innerText = 'Нужно досмотреть рекламу, чтобы продолжить!';
-    //         isAdPlaying = false;
-    //         adButtonEl.disabled = false;
-    //     }
-    // });
-    
-    // Используем setTimeout для симуляции просмотра (3 секунды)
-    setTimeout(() => {
-        onAdWatched(); // Вызываем коллбэк "успешного просмотра"
-    }, 3000);
+    if (AdController) {
+        AdController.show()
+            .then(() => {
+                // Реклама показана успешно (просмотрена или закрыта)
+                messageEl.innerText = 'Реклама успешно показана!';
+                onAdWatched();
+            })
+            .catch((error) => {
+                // Ошибка при показе рекламы или пользователь пропустил
+                console.error("Ошибка при показе рекламы Adsgram:", error);
+                messageEl.innerText = 'Не удалось показать рекламу или она была пропущена.';
+                isAdPlaying = false;
+                adButtonEl.disabled = false;
+            });
+    } else {
+        messageEl.innerText = 'Adsgram не инициализирован. Невозможно показать рекламу.';
+        isAdPlaying = false;
+        adButtonEl.disabled = false;
+        console.error("AdController is not initialized.");
+    }
 });
 
 // 6. Функция "награды" после просмотра
