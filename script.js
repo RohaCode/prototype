@@ -25,18 +25,18 @@ window.addEventListener('load', () => {
     // 2. Авторизация и получение данных пользователя
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
+        console.log('Telegram User Object:', user); // Log the user object for debugging
         const userName = user.first_name || user.username || 'Игрок';
         userNameDisplayEl.innerText = `Игрок: ${userName}`;
 
         if (user.photo_url) {
             userAvatarEl.src = user.photo_url;
-            userAvatarEl.style.display = 'block'; // Show the avatar
-        } else {
-            userAvatarEl.style.display = 'none'; // Hide if no photo
         }
+        // No need to hide/show, as index.html now has a default src and is always visible.
+        // If user.photo_url is not present, the placeholder will be shown.
     } else {
         userNameDisplayEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
-        userAvatarEl.style.display = 'none'; // Hide if no user data
+        // If no user data, the placeholder will be shown.
     }
     
     // Расширяем приложение на всю высоту
