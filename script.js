@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
     // ВНИМАНИЕ: Замени "YOUR_ADSGRAM_BLOCK_ID" на свой реальный blockId с partner.adsgram.ai
     if (window.Adsgram) {
         AdController = window.Adsgram.init({
-            blockId: "r-17141",
+            blockId: "17141",
             debug: true, // Включаем режим отладки для тестирования
             debugConsole: true // Выводим логи отладки в консоль
         });
