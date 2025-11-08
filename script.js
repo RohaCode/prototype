@@ -4,8 +4,6 @@ const CLICKS_TO_OPEN = 10; // Ставим 10 для удобства тести
 // --- Элементы UI ---
 const tg = window.Telegram.WebApp;
 const userInfoEl = document.getElementById('user-info');
-const userAvatarEl = document.getElementById('user-avatar');
-const userNameDisplayEl = document.getElementById('user-name-display');
 const chestEl = document.getElementById('chest');
 const progressEl = document.getElementById('progress');
 const progressTextEl = document.getElementById('progress-text');
@@ -25,18 +23,10 @@ window.addEventListener('load', () => {
     // 2. Авторизация и получение данных пользователя
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
-        console.log('Telegram User Object:', user); // Log the user object for debugging
         const userName = user.first_name || user.username || 'Игрок';
-        userNameDisplayEl.innerText = `Игрок: ${userName}`;
-
-        if (user.photo_url) {
-            userAvatarEl.src = user.photo_url;
-        }
-        // No need to hide/show, as index.html now has a default src and is always visible.
-        // If user.photo_url is not present, the placeholder will be shown.
+        userInfoEl.innerText = `Игрок: ${userName}`;
     } else {
-        userNameDisplayEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
-        // If no user data, the placeholder will be shown.
+        userInfoEl.innerText = 'Игрок: Гость (Запустите в Telegram)';
     }
     
     // Расширяем приложение на всю высоту

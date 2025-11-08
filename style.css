@@ -31,17 +31,6 @@ body {
             color: var(--tg-hint-color);
             position: absolute;
             top: 20px;
-            display: flex; /* Use flexbox for alignment */
-            align-items: center; /* Vertically align items */
-            gap: 10px; /* Space between avatar and name */
-        }
-
-        .user-avatar-img {
-            width: 40px; /* Size of the avatar */
-            height: 40px;
-            border-radius: 50%; /* Make it circular */
-            object-fit: cover; /* Ensure the image covers the area */
-            border: 2px solid var(--tg-button-color); /* Optional: add a border */
         }
 #game-area {
     display: flex;
